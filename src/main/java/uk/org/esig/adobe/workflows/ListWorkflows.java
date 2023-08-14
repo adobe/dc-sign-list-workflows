@@ -68,7 +68,7 @@ public class ListWorkflows {
             /*
              *  For each user:
              *  (a) Make sure that they are ACTIVE
-             *  (b) Get the list of templates they have access to
+             *  (b) Get the list of workflows they have access to
              *  (c) Check which of these the user owns
              *  (d) Output details if, and only if, they are the owner
              */
