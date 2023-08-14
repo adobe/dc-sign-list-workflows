@@ -6,10 +6,10 @@
 
     <groupId>uk.org.esig</groupId>
     <artifactId>aas-list-workflows</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
 
     <name>Adobe Acrobat List Workflows</name>
-    <description>This utility provides the ability to list all of the templates, and their owners, within a single Acrobat Sign account</description>
+    <description>This utility provides the ability to list all of the active workflows, and their owners, within a single Acrobat Sign account</description>
 
     <build>
         <plugins>

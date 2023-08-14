@@ -79,10 +79,10 @@ public class ListWorkflows {
                     String email = userInfo.getEmail();
                     String apiUser = API_USER_PREFIX + email;
                     OriginatorWorkflows workflows = workflowsApi.getWorkflows(accessToken,
-                                                                        apiUser,
-                                                                        Boolean.FALSE,
-                                                                        Boolean.FALSE,
-                                                                        null);
+                                                                              apiUser,
+                                                                              Boolean.FALSE,
+                                                                              Boolean.FALSE,
+                                                                              null);
                     List<OriginatorWorkflow> workflowList = workflows.getOriginatorWorkflowList();
                     if (workflowList != null) {
                         for (OriginatorWorkflow workflow : workflowList) {
