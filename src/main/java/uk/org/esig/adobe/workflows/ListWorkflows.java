@@ -13,13 +13,16 @@ import io.swagger.client.model.workflows.OriginatorWorkflow;
 import io.swagger.client.model.workflows.OriginatorWorkflows;
 import org.apache.commons.csv.CSVFormat;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListWorkflows {
     private static final String API_HOST = "https://api.adobesign.com/";
     private static final String API_PATH = "api/rest/v6";
     private static final String API_USER_PREFIX = "email:";
     private static final String BEARER = "Bearer ";
+    private static final int CAPACITY = 20000;
     private static final int PAGE_SIZE = 1000;
     private static final int TIMEOUT = 300000;
     private static final String USAGE = "Usage: java -jar aas-list-workflows-<version>.jar <integrationKey>";
@@ -58,6 +61,8 @@ public class ListWorkflows {
         UsersApi usersApi = new UsersApi(apiClient);
         OriginatorWorkflowsApi workflowsApi = new OriginatorWorkflowsApi(apiClient);
 
+        Map<String, OriginatorWorkflow> foundWorkflows = new HashMap<String, OriginatorWorkflow>(CAPACITY);
+        Map<String, UserInfo> foundUsers = new HashMap<String, UserInfo>(CAPACITY);
         /*
          *  Obtain the first page of users
          */
@@ -73,6 +78,7 @@ public class ListWorkflows {
              *  (d) Output details if, and only if, they are the owner
              */
             for (UserInfo userInfo: userInfoList) {
+                foundUsers.put(userInfo.getId(), userInfo);
                 DetailedUserInfo detail = usersApi.getUserDetail(accessToken, userInfo.getId(), null);
                 if (detail != null && detail.getStatus().equals(DetailedUserInfo.StatusEnum.ACTIVE)) {
                     String userId = userInfo.getId();
@@ -86,13 +92,7 @@ public class ListWorkflows {
                     List<OriginatorWorkflow> workflowList = workflows.getOriginatorWorkflowList();
                     if (workflowList != null) {
                         for (OriginatorWorkflow workflow : workflowList) {
-                            String originatorId = workflow.getOriginatorId();
-                            if (userId != null && userId.equals(originatorId)) {
-                                System.out.println(format(workflow.getId(),
-                                                          workflow.getDisplayName(),
-                                                          email,
-                                                          workflow.getScope().name()));
-                            }
+                            foundWorkflows.put(workflow.getId(), workflow);
                         }
                     }
                 }
@@ -105,6 +105,14 @@ public class ListWorkflows {
             else {
                 userInfoList = null;
             }
+        }
+        for (OriginatorWorkflow workflow: foundWorkflows.values()) {
+            String scope = (workflow.getScope() != null) ? workflow.getScope().name() : "USER";
+            UserInfo userInfo = foundUsers.get(workflow.getOriginatorId());
+            System.out.println(format(workflow.getId(),
+                                      workflow.getDisplayName(),
+                                      userInfo.getEmail(),
+                                      scope));
         }
     }
 
