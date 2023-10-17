@@ -17,6 +17,7 @@ import io.swagger.client.model.workflows.OriginatorWorkflows;
 import io.swagger.client.model.workflows.UserWorkflow;
 import org.apache.commons.csv.CSVFormat;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,16 +116,18 @@ public class ListWorkflows {
                 DetailedUserInfo detail = usersApi.getUserDetail(accessToken, userInfo.getId(), null);
                 if (detail != null && detail.getStatus().equals(DetailedUserInfo.StatusEnum.ACTIVE)) {
                     String email = userInfo.getEmail();
-                    String apiUser = API_USER_PREFIX + email;
-                    OriginatorWorkflows workflows = workflowsApi.getWorkflows(accessToken,
-                                                                              apiUser,
-                                                                              Boolean.FALSE,
-                                                                              Boolean.FALSE,
-                                                                              null);
-                    List<OriginatorWorkflow> workflowList = workflows.getOriginatorWorkflowList();
-                    if (workflowList != null) {
-                        for (OriginatorWorkflow workflow : workflowList) {
-                            foundWorkflows.put(workflow.getId(), workflow);
+                    if (StandardCharsets.US_ASCII.newEncoder().canEncode(email)) {
+                        String apiUser = API_USER_PREFIX + email;
+                        OriginatorWorkflows workflows = workflowsApi.getWorkflows(accessToken,
+                                                                                  apiUser,
+                                                                                  Boolean.FALSE,
+                                                                                  Boolean.FALSE,
+                                                                                  null);
+                        List<OriginatorWorkflow> workflowList = workflows.getOriginatorWorkflowList();
+                        if (workflowList != null) {
+                            for (OriginatorWorkflow workflow : workflowList) {
+                                foundWorkflows.put(workflow.getId(), workflow);
+                            }
                         }
                     }
                 }
