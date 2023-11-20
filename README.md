@@ -1,4 +1,4 @@
-# aas-list-workflows
+# dc-sign-list-workflows
 
 ## Introduction
 
@@ -6,7 +6,7 @@ This Java-based command-line tool provides a simple method to list all the workf
 
 ## Set-Up Instructions
 
-+ Download the latest release of the `aas-list-workflows-<version>.jar` from the [Releases](https://git.corp.adobe.com/sign-acs/aas-list-workflows/releases) page
++ Download the latest release of the `dc-sign-list-workflows-<version>.jar` from the [Releases](https://git.corp.adobe.com/sign-acs/dc-sign-list-workflows/releases) page
 + [Download Java 1.8](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html), if you don't already have it installed on your machine
 + [IP Addresses to add to your allow list](https://helpx.adobe.com/sign/system-requirements.html#IPs), if needed
 
@@ -31,7 +31,7 @@ To do this, follow the steps below:
   + `[--sandbox]` optional flag if the integration key is for a Sandbox account
 
 ```sh
-java -jar aas-list-workflows-<version>.jar <integrationKey> [--sandbox]
+java -jar dc-sign-list-workflows-<version>.jar <integrationKey> [--sandbox]
 ```
 
 Assuming you have specified the required parameters correctly, then you should see output similar to that below:
@@ -41,7 +41,7 @@ Assuming you have specified the required parameters correctly, then you should s
 Note that the output is deliberately concise to support redirecting output to a CSV file which can then be opened in programs such as Microsoft Excel.
 
 ```sh
-java -jar aas-list-workflows-<version>.jar <integrationKey> > output.csv
+java -jar dc-sign-list-workflows-<version>.jar <integrationKey> > output.csv
 ```
 
 ## Building
@@ -65,3 +65,9 @@ Once this has completed, clone this repository and build the package by issuing:
 cd <location-of-cloned-tool-repo>
 mvn clean package
 ```
+
+## Contributing
+Contributions are welcomed! Read the [Contributing Guide](CODE_OF_CONDUCT.md) for more information.
+
+## Licensing
+This project is licensed under the Apache V2 License. See [LICENSE](LICENSE) for more information.
