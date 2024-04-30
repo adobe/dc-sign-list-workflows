@@ -19,7 +19,7 @@
 
     <groupId>uk.org.esig</groupId>
     <artifactId>dc-sign-list-workflows</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 
     <name>Acrobat Sign List Workflows</name>
     <description>This utility provides the ability to list all the active workflows, and their owners, within an Acrobat Sign account</description>

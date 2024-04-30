@@ -50,6 +50,8 @@ public class ListWorkflows {
     private static final CharsetEncoder ASCII_ENCODER = StandardCharsets.US_ASCII.newEncoder();
     private static final String BEARER = "Bearer ";
     private static final int CAPACITY = 20000;
+    private static final String NO_ORIGINATOR = "<No Originator found for Workflow>";
+    private static final String NO_SUCH_ACTIVE_USER = "<No User found for Workflow Originator>";
     private static final int PAGE_SIZE = 1000;
     private static final String SANDBOX = "--sandbox";
     private static final String SANDBOX_API_URL = "https://api.adobesignsandbox.com/";
@@ -169,10 +171,19 @@ public class ListWorkflows {
                 groupName = foundGroups.get(workflow.getScopeId());
             }
             String scope = (workflow.getScope() != null) ? workflow.getScope().name() : "USER";
-            UserInfo userInfo = foundUsers.get(workflow.getOriginatorId());
+            String originatorEmail = NO_ORIGINATOR;
+            if (workflow.getOriginatorId() != null) {
+                UserInfo userInfo = foundUsers.get(workflow.getOriginatorId());
+                if (userInfo != null) {
+                    originatorEmail = userInfo.getEmail();
+                }
+                else {
+                    originatorEmail = NO_SUCH_ACTIVE_USER;
+                }
+            }
             System.out.println(format(workflow.getId(),
                                       workflow.getDisplayName(),
-                                      userInfo.getEmail(),
+                                      originatorEmail,
                                       scope,
                                       groupName));
         }
